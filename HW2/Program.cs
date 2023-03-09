@@ -1,4 +1,4 @@
-﻿namespace MyClasses.HomeWorks.HW2
+﻿namespace MyClasses.HomeWork.HW2
 {
     internal class Program
     {
