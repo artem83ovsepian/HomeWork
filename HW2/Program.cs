@@ -42,8 +42,8 @@
             //                    First Number : 6
             //                    Second Number : 5
 
-            firtstNumber = ConsoleNumberGet("Input the First Number : ");
-            secondNumber = ConsoleNumberGet("Input the Second Number : ");
+            firtstNumber = ConsoleGetNumber("Input the First Number : ");
+            secondNumber = ConsoleGetNumber("Input the Second Number : ");
 
             Console.WriteLine("Swapping...");
 
@@ -61,25 +61,25 @@
             //            Input the first number to multiply: 2
             //                    Input the second number to multiply: 3
             //                    Input the third number to multiply: 6
-            firtstNumber = ConsoleNumberGet("Input the first Number to multiply: ");
-            secondNumber = ConsoleNumberGet("Input the second Number to multiply: ");
-            var thirdNumber = ConsoleNumberGet("Input the third Number to multiply: ");
+            firtstNumber = ConsoleGetNumber("Input the first Number to multiply: ");
+            secondNumber = ConsoleGetNumber("Input the second Number to multiply: ");
+            var thirdNumber = ConsoleGetNumber("Input the third Number to multiply: ");
 
             Console.WriteLine($"Multiplaction result {firtstNumber} * {secondNumber} * {thirdNumber} = {firtstNumber * secondNumber * thirdNumber}");
             Console.WriteLine();
 
         }
 
-        private static decimal ConsoleNumberGet(string userMessage)
+        private static decimal ConsoleGetNumber(string userMessage)
         {
-            decimal firtstNumber;
+            decimal outNumber;
 
             Console.Write(userMessage);
 
-            while (!Decimal.TryParse(Console.ReadLine(), out firtstNumber))
+            while (!Decimal.TryParse(Console.ReadLine(), out outNumber))
                 Console.Write("Wrong number. " + userMessage);
 
-            return firtstNumber;
+            return outNumber;
         }
     }
 }
