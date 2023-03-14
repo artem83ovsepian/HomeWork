@@ -89,7 +89,7 @@ namespace MyClasses.HomeWork.HW3
                 StartNewTask(5);
 
                 var num = ConsoleGetNumber("Input a number(integer): ");
-                var arraySum = num.ToString().Select(o => int.Parse(o.ToString())).ToArray().Sum();
+                var arraySum = num.ToString().Select(o => int.Parse(o.ToString())).Sum();
                 Console.WriteLine($"Sum of the digits of the said integer: {arraySum}");
 
                 if (IsEnterInputed()) { break; }
