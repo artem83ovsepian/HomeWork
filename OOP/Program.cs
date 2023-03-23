@@ -12,8 +12,12 @@ namespace MyClasses.HomeWork.OOP
             var studentB = new Student("Jimmy");
             studentB.DeleteCourse("default Course Name");
 
-            studentA.Print("/*Student A Information*/");
-            studentB.Print("/*Student B Information*/");
+            studentA.DescribeYourself("/*Student A Information*/");
+            studentB.DescribeYourself("/*Student B Information*/");
+
+            var teacherA = new Teacher("Garry", "Potter", 98, "London", new Course[] { new Course { Name = "Organic Crystals", Duration = 5, StudentsCount = 14 }, new Course { Name = "Theoretical Auras", Duration = 7, StudentsCount = 31 } });
+            teacherA.AddCourse("Big Bang Theory", "", 45, 3);
+            teacherA.DescribeYourself("/*Teacher A Information*/");
         }
     }
 }

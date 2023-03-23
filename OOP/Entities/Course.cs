@@ -23,7 +23,7 @@
         { }
         public void Print()
         {
-            Console.WriteLine($"Course Information:\n Name:\t{Name}\n Teacher Name:\t{TeacherName}\n Duration:\t{Duration}\n Students Count:\t{StudentsCount}");
+            Console.WriteLine($"Name:\t{Name}\n Teacher Name:\t{TeacherName}\n Duration:\t{Duration}\n Students Count:\t{StudentsCount}");
         }
         public void PrintName()
         {
