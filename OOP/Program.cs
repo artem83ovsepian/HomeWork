@@ -1,4 +1,7 @@
-﻿using MyClasses.HomeWork.OOP.Entities;
+﻿using MyClasses.HomeWork.OOP.Defaults;
+using MyClasses.HomeWork.OOP.Entities;
+using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace MyClasses.HomeWork.OOP
 {
@@ -6,18 +9,30 @@ namespace MyClasses.HomeWork.OOP
     {
         static void Main(string[] args)
         {
+            var course1 = new Course("Theory Of Relativity", "Albert Einstein", 45);
+            var course2 = new Course();
+
             var studentA = new Student("Billy", "Bones", 58);
-            studentA.AddCourse("Theory Of Relativity", "Albert Einstein", 45, 1);
+            studentA.AddCourse(course1);
+            studentA.AddCourse(course2);
+            studentA.AddCourse(new List<Course> { course1, new Course("Geometry") });
+            studentA.RemoveCourseByName(Default.CourseName);
+            studentA.DescribeYourself("/*Student A Information*/");
+
 
             var studentB = new Student("Jimmy");
-            studentB.DeleteCourse("default Course Name");
-
-            studentA.DescribeYourself("/*Student A Information*/");
+            studentB.AddCourse(new List<Course> { new Course("Organic Crystals"), new Course("Theoretical Auras") });
             studentB.DescribeYourself("/*Student B Information*/");
 
-            var teacherA = new Teacher("Garry", "Potter", 98, "London", new Course[] { new Course { Name = "Organic Crystals", Duration = 5, StudentsCount = 14 }, new Course { Name = "Theoretical Auras", Duration = 7, StudentsCount = 31 } });
-            teacherA.AddCourse("Big Bang Theory", "", 45, 3);
+            var teacherA = new Teacher("Garry", "Potter", 98, "London", new List<Student> { studentB}, studentB.GetAllCources());
             teacherA.DescribeYourself("/*Teacher A Information*/");
+
+            var courseA = new Course("Big Bang Theory", $"{teacherA.FirstName}, {teacherA.LastName}", 55, new List<Student>() { studentA });
+            courseA.AddStudent(studentB);
+            courseA.DescribeYourself("/*Course A Information*/");
+            courseA.RemoveStudentByName(studentB.FirstName, studentB.LastName);
+            courseA.AddStudent(new List<Student> { studentA, studentB});
+            courseA.DescribeYourself("/*Course A Information*/");
         }
     }
 }

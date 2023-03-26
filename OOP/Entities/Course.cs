@@ -1,37 +1,69 @@
-﻿namespace MyClasses.HomeWork.OOP.Entities
+﻿using MyClasses.HomeWork.OOP.Interfaces;
+using MyClasses.HomeWork.OOP.Defaults;
+
+namespace MyClasses.HomeWork.OOP.Entities
 {
-    class Course
+    public class Course : ICourse
     {
+        private List<Student> _students { get; set; }
+        private int _studentsCount { set; get; }
         public string Name { set; get; }
         public string TeacherName { set; get; }
         public int Duration { set; get; }
-        public int StudentsCount { set; get; }
-        public Course(string name, string teacherName, int duration, int studentsCount)
+        
+        public Course(string name, string teacherName, int duration, List<Student> students)
         {
             Name = name;
             TeacherName = teacherName;
             Duration = duration;
-            StudentsCount = studentsCount;
+            _students = students;
+            _studentsCount = _students.Count;
         }
-        public Course(string name, string teacherName, int duration):this(name, teacherName, duration, 0)
+        public Course(string name, string teacherName, int duration):this(name, teacherName, duration, new List<Student>())
         { }
-        public Course(string name, string teacherName) : this(name, teacherName, 0)
+        public Course(string name, string teacherName) : this(name, teacherName, Default.CourseDuration)
         { }
-        public Course(string name) : this(name, "default Taecher")
+        public Course(string name) : this(name, Default.GetFullName())
         { }
-        public Course() : this("default Course Name")
+        public Course() : this(Default.CourseName)
         { }
-        public void Print()
+        public void DescribeYourself(string header)
         {
-            Console.WriteLine($"Name:\t{Name}\n Teacher Name:\t{TeacherName}\n Duration:\t{Duration}\n Students Count:\t{StudentsCount}");
+            Console.WriteLine($"{header}\n Name:\t\t{Name}\n Teacher Name:\t{TeacherName}\n Duration:\t{Duration}\n Students Count:{GetStudentsCount()}\n Students:");
+            foreach (Student student in _students)
+            {
+                student.PrintFullName();
+            }
+            Console.WriteLine();
         }
         public void PrintName()
         {
             Console.WriteLine("\t\t" + Name);
         }
-        public void AddSudent()
+        public void AddStudent(Student student)
         {
-            StudentsCount++;
+            _students.Add(student);
+            _studentsCount = _students.Count;
+        }
+        public void RemoveStudentByName(string studentFirstName, string studentLastName)
+        {
+            foreach (var student in _students.ToList())
+            {
+                if (student.FirstName == studentFirstName && student.LastName == studentLastName)
+                {
+                    _students.Remove(student);
+                }
+            }
+            _studentsCount = _students.Count;
+        }
+        public void AddStudent(List<Student> students)
+        {
+            _students.AddRange(students);
+            _studentsCount = _students.Count;
+        }
+        public int GetStudentsCount()
+        { 
+            return _studentsCount; 
         }
     }
 }
