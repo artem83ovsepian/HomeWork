@@ -7,6 +7,7 @@ namespace MyClasses.HomeWork.OOP.Entities
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string FullName { get; set; }
         public int Age { get; set; }
         public string City { get; set; }
 
@@ -14,6 +15,7 @@ namespace MyClasses.HomeWork.OOP.Entities
         {
             FirstName = firstName;
             LastName = lastName;
+            FullName = $"{lastName}, {firstName}";
             Age = age;
             City = city;
         }
@@ -33,8 +35,7 @@ namespace MyClasses.HomeWork.OOP.Entities
 
         public void PrintFullName()
         {
-            var fullName = $"{LastName}, {FirstName}";
-            Console.WriteLine($"\t\t{fullName}");
+            Console.WriteLine($"\t\t{FullName}");
         }
     }
 }

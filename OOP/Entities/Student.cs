@@ -1,17 +1,21 @@
 ﻿using MyClasses.HomeWork.OOP.Defaults;
+using MyClasses.HomeWork.OOP.Repositories;
 
 namespace MyClasses.HomeWork.OOP.Entities
 {
     public class Student : Human
     {
+        private CourseRepository _courseRepo;
         private List<Course> _courses;
         public Student(string firstName, string lastName, int age, string city, List<Course> coursesAttended)
         { 
             FirstName = firstName;
             LastName = lastName;
+            FullName = $"{lastName}, {firstName}";
             Age = age;
             City = city;
             _courses = coursesAttended;
+            _courseRepo = new CourseRepository();
         }
         public Student(string firstName, string lastName, int age, string city) : this(firstName, lastName, age, city, new List<Course>())
         { }
@@ -25,21 +29,15 @@ namespace MyClasses.HomeWork.OOP.Entities
         { }
         public void AddCourse(Course course)
         {
-            _courses.Add(course);
+            _courses = _courseRepo.AddCourseToCollection(_courses, course);
         }
         public void AddCourse(List<Course> courses)
         {
-            _courses.AddRange(courses);
+            foreach (var c in courses) { AddCourse(c); }
         }
         public void RemoveCourseByName(string courseName)
         {
-            foreach (var course in _courses.ToList())
-            {
-                if (course.Name == courseName)
-                {
-                    _courses.Remove(course);
-                }
-            }
+            _courses = _courseRepo.RemoveCourseByNameFromCollection(_courses, courseName);
         }
         public int GetNumberOfCoursesAttended()
         {
@@ -53,10 +51,7 @@ namespace MyClasses.HomeWork.OOP.Entities
         {
             base.DescribeYourself(header);
             Console.WriteLine($" Courses: ");
-            foreach (var course in _courses)
-            {
-                course.PrintName();
-            }
+            Console.WriteLine(string.Join("\n", _courses.Select(x => "\t\t" + x.Name)));
             Console.WriteLine();
         }
 

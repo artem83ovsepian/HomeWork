@@ -1,19 +1,29 @@
 ﻿using MyClasses.HomeWork.OOP.Defaults;
+using MyClasses.HomeWork.OOP.Exceptions;
+using MyClasses.HomeWork.OOP.Interfaces;
+using MyClasses.HomeWork.OOP.Repositories;
+using MyClasses.HomeWork.OOP.Repositories;
+using System.Collections.Generic;
 
 namespace MyClasses.HomeWork.OOP.Entities
 {
     public class Teacher : Human
     {
+        private StudentRepository _studRepo;
+        private CourseRepository _courseRepo;
         private List<Student> _students;
         private List<Course> _courses;
         public Teacher(string firstName, string lastName, int age, string city, List<Student> students, List<Course> courses)
         { 
             FirstName = firstName;
             LastName = lastName;
+            FullName = $"{lastName}, {firstName}";
             Age = age;
             City = city;
             _students = students;
             _courses = courses;
+            _studRepo = new StudentRepository();
+            _courseRepo = new CourseRepository();
         }
         public Teacher(string firstName, string lastName, int age, string city) : this(firstName, lastName, age, city, new List<Student>(), new List<Course>())
         { }
@@ -28,21 +38,15 @@ namespace MyClasses.HomeWork.OOP.Entities
 
         public void AddStudent(Student student)
         {
-            _students.Add(student);
+            _students = _studRepo.AddStudentToCollection(_students, student);
         }
         public void AddStudent(List<Student> students)
         {
-            _students.AddRange(students);
+            foreach (var student in students) { AddStudent(student); }
         }
-        public void RemoveStudentByName(string studentFirstName, string studentLastName)
+        public void RemoveStudentByName(string studentFullName)
         {
-            foreach (var student in _students.ToList())
-            {
-                if (student.FirstName == studentFirstName && student.LastName == studentLastName)
-                {
-                    _students.Remove(student);
-                }
-            }
+            _students = _studRepo.RemoveStudentByNameFromCollection(_students, studentFullName);
         }
         public int GetNumberOfStudents()
         {
@@ -50,22 +54,17 @@ namespace MyClasses.HomeWork.OOP.Entities
         }
         public void AddCourse(Course course)
         {
-            _courses.Add(course);
+            _courses = _courseRepo.AddCourseToCollection(_courses, course);
+            
         }
         public void AddCourse(List<Course> courses)
         {
-            _courses.AddRange(courses);
+            foreach(var c in courses) { AddCourse(c); }
         }
 
         public void RemoveCourseByName(string courseName)
         {
-            foreach (var course in _courses.ToList())
-            {
-                if (course.Name == courseName)
-                {
-                    _courses.Remove(course);
-                }
-            }
+            _courses = _courseRepo.RemoveCourseByNameFromCollection(_courses, courseName);
         }
 
         public int GetNumberOfCourses()
@@ -76,15 +75,9 @@ namespace MyClasses.HomeWork.OOP.Entities
         {
             base.DescribeYourself(header);
             Console.WriteLine($" Students: ");
-            foreach (var student in _students)
-            {
-                student.PrintFullName();
-            }
+            Console.WriteLine(string.Join("\n", _students.Select(x => "\t\t" + x.FullName)));
             Console.WriteLine($" Courses: ");
-            foreach (var course in _courses)
-            {
-                Console.WriteLine($"\t\t{course.Name}");
-            }
+            Console.WriteLine(string.Join("\n", _courses.Select(x => "\t\t" + x.Name)));
             Console.WriteLine();
         }
     }

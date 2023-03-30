@@ -1,10 +1,12 @@
 ﻿using MyClasses.HomeWork.OOP.Interfaces;
 using MyClasses.HomeWork.OOP.Defaults;
+using MyClasses.HomeWork.OOP.Repositories;
 
 namespace MyClasses.HomeWork.OOP.Entities
 {
     public class Course : ICourse
     {
+        private StudentRepository _studRepo;
         private List<Student> _students { get; set; }
         private int _studentsCount { set; get; }
         public string Name { set; get; }
@@ -18,6 +20,7 @@ namespace MyClasses.HomeWork.OOP.Entities
             Duration = duration;
             _students = students;
             _studentsCount = _students.Count;
+            _studRepo = new StudentRepository();
         }
         public Course(string name, string teacherName, int duration):this(name, teacherName, duration, new List<Student>())
         { }
@@ -30,10 +33,7 @@ namespace MyClasses.HomeWork.OOP.Entities
         public void DescribeYourself(string header)
         {
             Console.WriteLine($"{header}\n Name:\t\t{Name}\n Teacher Name:\t{TeacherName}\n Duration:\t{Duration}\n Students Count:{GetStudentsCount()}\n Students:");
-            foreach (Student student in _students)
-            {
-                student.PrintFullName();
-            }
+            Console.WriteLine(string.Join("\n", _students.Select(x => "\t\t" + x.FullName)));
             Console.WriteLine();
         }
         public void PrintName()
@@ -42,28 +42,28 @@ namespace MyClasses.HomeWork.OOP.Entities
         }
         public void AddStudent(Student student)
         {
-            _students.Add(student);
-            _studentsCount = _students.Count;
+            _students = _studRepo.AddStudentToCollection(_students, student);
+            UpdateStudentCount();
         }
-        public void RemoveStudentByName(string studentFirstName, string studentLastName)
+        public void RemoveStudentByName(string studentFullName)
         {
-            foreach (var student in _students.ToList())
-            {
-                if (student.FirstName == studentFirstName && student.LastName == studentLastName)
-                {
-                    _students.Remove(student);
-                }
-            }
-            _studentsCount = _students.Count;
+            _students = _studRepo.RemoveStudentByNameFromCollection(_students, studentFullName);
+            UpdateStudentCount();
         }
         public void AddStudent(List<Student> students)
         {
-            _students.AddRange(students);
-            _studentsCount = _students.Count;
+            foreach(var student in students)
+            {
+                AddStudent(student);
+            }
         }
         public int GetStudentsCount()
         { 
             return _studentsCount; 
+        }
+        private void UpdateStudentCount()
+        {
+            _studentsCount = _students.Count;
         }
     }
 }
